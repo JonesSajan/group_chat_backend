@@ -3,7 +3,7 @@ const Chat = require('../models/chat')
 exports.sendChat = async (req,res,next)=>{
     try{
     const message = req.body.message
-    const result = await req.user.createChat({message:message})
+    const result = await req.user.createChat({message:message,name:req.user.name})
     res.status(200).json(result)
 }catch(err){
     console.log(err)
