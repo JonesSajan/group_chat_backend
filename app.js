@@ -3,10 +3,13 @@ const cors = require('cors')
 const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
+const User = require('./models/user')
+const Chat = require('./models/chat')
 
 const app = express();
 
 const userRoutes = require('./routes/user');
+const chatRoutes = require('./routes/chat')
 
 
 
@@ -18,6 +21,10 @@ app.use(cors( {
 }));
 
 app.use('/user', userRoutes);
+app.use('/chat', chatRoutes);
+
+User.hasMany(Chat)
+Chat.belongsTo(User)
 
 
 
