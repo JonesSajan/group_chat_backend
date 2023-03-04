@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
 const User = require('./models/user')
 const Chat = require('./models/chat')
+const Group = require('./models/group')
 
 const app = express();
 
@@ -25,6 +26,9 @@ app.use('/chat', chatRoutes);
 
 User.hasMany(Chat)
 Chat.belongsTo(User)
+
+User.belongsToMany(Group, { through: 'user_group' });
+Group.belongsToMany(User, { through: 'user_group' });
 
 
 
