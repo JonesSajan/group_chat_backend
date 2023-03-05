@@ -11,6 +11,7 @@ const app = express();
 
 const userRoutes = require('./routes/user');
 const chatRoutes = require('./routes/chat')
+const groupRoutes = require('./routes/group')
 
 
 
@@ -23,9 +24,14 @@ app.use(cors( {
 
 app.use('/user', userRoutes);
 app.use('/chat', chatRoutes);
+app.use('/group', groupRoutes);
 
 User.hasMany(Chat)
 Chat.belongsTo(User)
+
+Group.hasMany(Chat)
+Chat.belongsTo(Group)
+
 
 User.belongsToMany(Group, { through: 'user_group' });
 Group.belongsToMany(User, { through: 'user_group' });
@@ -36,7 +42,6 @@ Group.belongsToMany(User, { through: 'user_group' });
 sequelize
   .sync()
   .then(result => {
-    // console.log(result);
     app.listen(process.env.PORT || 3000);
   })
   .catch(err => {

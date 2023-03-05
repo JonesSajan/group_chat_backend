@@ -9,6 +9,7 @@ const group = sequelize.define('group', {
     primaryKey: true,
   },
   name: { type: Sequelize.STRING, allowNull: false },
+  admin: { type: Sequelize.INTEGER, allowNull: false },
 
   });
 

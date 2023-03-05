@@ -8,6 +8,12 @@ const generateToken=(id,name)=>{
 }
 
 
+
+exports.getUsers=(req,res,next)=>{
+  User.findAll().then((result)=>res.status(200).json(result)).catch((err)=>{res.status(500).json([])})
+}
+
+
 exports.setUser = (req, res, next) => {
   // console.log("add user called")
 //   console.log("****************************************",req.body);
