@@ -1,13 +1,21 @@
 const Chat = require('../models/chat')
 const { Op } = require("sequelize");
+const jwt = require("jsonwebtoken");
 
-exports.sendChat = async (req,res,next)=>{
+
+
+
+  
+
+exports.sendChat = async (message,groupid,token)=>{
     try{
-    console.log("//////////////////sendChat/////////////////////////",req.body)
-    const message = req.body.message
-    const groupid = req.body.groupid
-    const result = await req.user.createChat({message:message,name:req.user.name,groupId:groupid})
-    res.status(200).json(result)
+    console.log("//////////////////sendChat/////////////////////////")
+
+    user = jwt.verify(token, '8770903047');
+    console.log(user,user.id)
+
+    const result = await Chat.create({message:message,name:user.name,groupId:groupid,userId:user.id})
+    console.log(result)
 }catch(err){
     console.log(err)
 }

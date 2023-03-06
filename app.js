@@ -6,7 +6,10 @@ const sequelize = require('./util/database');
 const User = require('./models/user')
 const Chat = require('./models/chat')
 const Group = require('./models/group')
-const io = require('socket.io')(3001)
+const io = require('socket.io')(3001,{cors:{
+  origin: ['http://127.0.0.1:5500'], 
+}})
+const chatController = require("./controllers/chat")
 
 const app = express();
 
@@ -39,7 +42,17 @@ Group.belongsToMany(User, { through: 'user_group' });
 
 
 io.on('connection', socket => {
+  var room;
   console.log("????????????????????????????????????",socket.id)
+  socket.on("create-room",(id)=>{
+    console.log(id)
+    socket.join(id)
+    room=id;
+  })
+  socket.on("send-message",(message,token)=>{
+    chatController.sendChat(message,room,token)
+    socket.broadcast.emit("receive-message",message,token)
+  })
   })
 
 
