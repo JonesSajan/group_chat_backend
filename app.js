@@ -6,6 +6,7 @@ const sequelize = require('./util/database');
 const User = require('./models/user')
 const Chat = require('./models/chat')
 const Group = require('./models/group')
+const io = require('socket.io')(3001)
 
 const app = express();
 
@@ -35,6 +36,11 @@ Chat.belongsTo(Group)
 
 User.belongsToMany(Group, { through: 'user_group' });
 Group.belongsToMany(User, { through: 'user_group' });
+
+
+io.on('connection', socket => {
+  console.log("????????????????????????????????????",socket.id)
+  })
 
 
 

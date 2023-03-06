@@ -1,5 +1,10 @@
 const Group = require('../models/group')
 const User = require('../models/user')
+const jwt=require('jsonwebtoken')
+
+const generateToken=(id,name,admin)=>{
+    return jwt.sign({id:id,name:name,admin:admin},'8770903047')
+}
 
 exports.getGroups = async (req,res,next)=>{
     try{
@@ -10,6 +15,21 @@ exports.getGroups = async (req,res,next)=>{
     res.status(500).json("something went wrong")
 }
 }
+
+exports.getGroupToken = async (req,res,next)=>{
+    try{
+    console.log("/////////////////getGroupToken////////////////////////////",req.body)
+    const groupid = req.body.groupid
+    const result = await Group.findAll({where:{id:groupid}})
+    const groupToken = generateToken(result[0].dataValues.id,result[0].dataValues.name,result[0].dataValues.admin) 
+
+    res.status(200).json(groupToken)
+}catch(err){
+    console.log(err)
+    res.status(500).json("something went wrong")
+}
+}
+
 
 exports.getGroupMembers = async (req,res,next)=>{
     try{
